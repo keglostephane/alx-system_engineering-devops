@@ -20,3 +20,6 @@ Display current directory contents
 * Long format
 * With users and group IDs displayed numerically
 * And hidden files
+
+## 6-firstdirectory
+creates a directory named my_first_directory in the /tmp/ directory.
