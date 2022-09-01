@@ -8,3 +8,6 @@ Display the content list of your working directory.
 
 ## 2-bring_me_home
 Change the working directory to the user's home directory
+
+## 3-listfiles
+Display directory contents in a long format
