@@ -1,4 +1,7 @@
 # Shell, I/O Redirection and Filters
 
 ## 0-hello_world
-prints “Hello, World”
+Print “Hello, World”
+
+## 1-confused_smiley
+Display a confused smiley "(Ôo)'
