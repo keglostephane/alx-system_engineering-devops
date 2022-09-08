@@ -1,2 +1,2 @@
 #!/bin/bash
-find . -type f -print '%a'
+ls -1u | head -n 10
