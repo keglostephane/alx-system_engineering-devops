@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
-# Display "Best School" 9 times and then "Hi" on 10th line.
+# Display "Best School" 10 times and then "Hi" and"Best School"
+# on 9th iteration.
 i=1
-while ((i < 10)); do
+while ((i <= 10)); do
     echo "Best School"
-    ((i++))
     if (( i == 9)); then
-       echo "Hi"
+	echo "Hi"
     fi
+    ((i++))
 done
