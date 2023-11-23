@@ -11,7 +11,7 @@ if [[ -e $f ]]; then
     fi
 
     if [[ -f $f ]]; then
-	echo "$f file is a regular file"
+	echo "$f is a regular file"
     fi
 
 else
