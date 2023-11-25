@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# kill a process and delete his PID file
+FILE="/var/run/myscript.pid"
+touch $FILE
+while true; do
+    echo "To infinity and beyond"
+    sleep 2
+    trap 'echo I hate the kill command; sudo rm $FILE; exit' TERM
+    trap "echo Y U no love me?!" INT
+    trap 'sudo rm $FILE; exit' QUIT
+done
