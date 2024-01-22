@@ -1,4 +1,4 @@
-Host 98512-web-01
-     Hostname 100.26.53.13
+Host 100.26.53.13
+     Hostname 98512-web-01
      IdentityFile ~/.ssh/school
      PasswordAuthentication no
