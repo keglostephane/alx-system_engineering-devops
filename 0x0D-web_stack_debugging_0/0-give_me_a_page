@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# fix web server installed on ubuntu docker container holbertonschool/265-0
+# to return a page containing "Hello Holberton" when querying '/' using curl
+
+service apache2 start
