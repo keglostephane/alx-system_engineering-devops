@@ -46,15 +46,6 @@ file { 'index.html':
   owner   => root,
 }
 
-# create 404 html file
-file { '404.html':
-  ensure  => 'file',
-  path    => '/var/www/html/404.html',
-  content => "Ceci n'est pas une page\n\n",
-  mode    => '0644',
-  owner   => root,
-}
-
 # configure nginx server
 file { 'default':
   ensure  => 'file',
