@@ -26,8 +26,8 @@ server {
 "
 
 # updage package repositories
-exec { 'update repositories'
-  command => 'apt update'
+exec { 'update repositories':
+  command => '/usr/bin/apt update',
 }
 
 # install nginx package
@@ -42,8 +42,6 @@ file { 'index.html':
   ensure  => 'file',
   path    => '/var/www/html/index.html',
   content => 'Hello World!',
-  mode    => '0644',
-  owner   => root,
 }
 
 # configure nginx server
@@ -51,13 +49,10 @@ file { 'default':
   ensure  => 'file',
   path    => '/etc/nginx/sites-available/default',
   content => $config,
-  mode    => '0644',
-  owner   => root,
 }
 
 # restart nginx server
 service { 'nginx':
-  provider => 'debian',
-  restart  => 'service nginx restart',
+  ensure   => running,
   require  => Package['nginx'],
 }
