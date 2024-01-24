@@ -25,10 +25,16 @@ server {
 }
 "
 
+# updage package repositories
+exec { 'update repositories'
+  command => 'apt update'
+}
+
 # install nginx package
 package { 'nginx':
   ensure   => installed,
   provider => apt,
+  require  => Exec['update repositories'],
 }
 
 # create and add content to index file
@@ -62,4 +68,5 @@ file { 'default':
 service { 'nginx':
   provider => 'debian',
   restart  => 'service nginx restart',
+  require  => Package['nginx'],
 }
