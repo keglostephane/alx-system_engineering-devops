@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# configure a Nginx server so that '/redirect_me' is redirecting to
+# another page
+# the redirection must be a "301 Moved Permanently"
+
+location1="\n\tlocation /redirect_me {\
+\n\t\treturn 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\
+\n\t}"
+config_folder="/etc/nginx/sites-available/"
+
+apt update && apt install -y nginx
+echo "Hello World!" > /var/www/html/index.html
+
+if cd $config_folder; then
+    echo "changing working directory to $config_folder";
+else
+    "echo Failure";
+    exit 1;
+fi
+
+if [[ -e "default.old" ]];then
+    echo "default.old already exists";
+else
+    echo "creating default.old";
+    mv default ./default.old;
+fi
+
+sed '/#/d' default.old | uniq -u | sed "\$ i\ $location1" > default
+service nginx restart
