@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Install and configure HAproxy on an ubuntu server so it send traffic to
+# "web-01" and "web-02"
+# distribute requests using a roundrobin algorithm
+# HAproxy should be managed via a init script
+
+
+CONFIG_LINES="frontend website\n\
+\tbind \*:80\n\
+\tmode http\n\
+\tdefault_backend web\n\n\
+backend web\n\
+\tbalance roundrobin\n\
+\tserver 98512-web-01 18\.207\.234\.107:80 check\n\
+\tserver 98512-web-02 54\.197\.98\.181:80 check\n"
+
+apt-get -y install --no-install-recommends software-properties-common
+add-apt-repository -y ppa:vbernat/haproxy-2.0
+apt-get update && sudo apt-get install -y haproxy=2.0.\*
+sed -i "$ a ENABLED=1" /etc/default/haproxy
+sed -i "\$ a\ \n$CONFIG_LINES" /etc/haproxy/haproxy.cfg
+service haproxy restart
