@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+# configure Nginx so that HTTP response contains a custom header:
+# the name of custom header is "X-Served-By"
+# the value of the custom HTTP header must be the hostname of the server
+# Nginx is running on
+
+CONFIG_LINE="add_header X-Served-By $HOSTNAME;"
+CONFIG_FILE="nginx.conf"
+CONFIG_PATH="/etc/nginx/"
+CONFIG_SITES_PATH="$CONFIG_PATH/sites-available/"
+CONFIG_SITES_DEFAULT="default"
+LOCATION_REDIRECT_ME="location /redirect_me {\
+\n\t\treturn 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n\t}"
+LOCATION_404="error_page 404 /404.html;"
+
+apt update && apt install -y nginx
+echo "Hello World!" > /var/www/html/index.html
+printf "Ceci n'est pas une page\n" > /var/www/html/404.html
+
+if cd $CONFIG_SITES_PATH; then
+    echo "cd $CONFIG_SITES_PATH";
+    if [[ -e "$CONFIG_SITES_DEFAULT.old" ]]; then
+	echo "$CONFIG_SITES_DEFAULT.old already exists";
+    else
+	echo "Backing up $CONFIG_SITES_DEFAULT to $CONFIG_SITES_DEFAULT.old";
+	cp "$CONFIG_SITES_DEFAULT" "./$CONFIG_SITES_DEFAULT.old";
+    fi
+    sed '/#/d' "$CONFIG_SITES_DEFAULT.old" | uniq -u | \
+	sed "\$ i\ \n\t$LOCATION_REDIRECT_ME" > "$CONFIG_SITES_DEFAULT";
+    sed -i "\$ i\ \n\t$LOCATION_404" "$CONFIG_SITES_DEFAULT";
+else
+    "Failed to change path to $CONFIG_SITES_PATH";
+    exit 1;
+fi
+
+
+if cd $CONFIG_PATH; then
+    echo "cd $CONFIG_PATH";
+    if [[ -e "$CONFIG_FILE.old" ]]; then
+	echo "$CONFIG_FILE.old already exists";
+    else
+	echo "Backing up $CONFIG_FILE to $CONFIG_FILE.old";
+	cp "$CONFIG_FILE" "./$CONFIG_FILE.old";
+    fi
+    sed '/#/d' "$CONFIG_FILE.old" | uniq -u | sed "\$ i\ \t$CONFIG_LINE" > \
+						  "$CONFIG_FILE";
+else
+    echo "Failed to change path to $CONFIG_PATH";
+    exit 1;
+fi
+
+
+echo "Restarting Nginx Server"
+if service nginx restart; then
+    echo "Nginx server restarted successfully";
+else
+    echo "Nginx server failed to restart";
+    exit 1
+fi
