@@ -1,1 +1,25 @@
 #!/usr/bin/env bash
+# query DNS A records of a domain and its sub-domains
+
+DOMAIN=""
+SUBDOMAIN=""
+DEFAULTS=("www" "lb-01" "web-01" "web-02")
+
+query_dns () {
+    if (( "$#" == 0 )) || (( "$#" > 2)); then
+	echo "USAGE: ./0-world_wide_web DOMAIN SUBDOMAIN"
+    elif (( "$#" == 1 )); then
+	DOMAIN="$1"
+	for val in "${DEFAULTS[@]}"; do
+	    printf "The subdomain %s is a A record and points to " "$val"
+	    dig A "$val.$DOMAIN" | awk '$1 ~ /^\w/ {print $5}'
+	done
+    elif (( "$#" == 2 )); then
+	DOMAIN="$1"
+	SUBDOMAIN="$2"
+	printf "The subdomain %s is a A record and points to " "$SUBDOMAIN"
+	dig A "$SUBDOMAIN.$DOMAIN" | awk '$1 ~ /^\w/ {print $5}'
+    fi
+}
+
+query_dns "$@"
