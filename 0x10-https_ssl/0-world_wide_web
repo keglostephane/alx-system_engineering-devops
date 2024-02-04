@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 # query DNS A records of a domain and its sub-domains
 
-DOMAIN=""
-SUBDOMAIN=""
+# default subdomains
 DEFAULTS=("www" "lb-01" "web-01" "web-02")
 
 query_dns () {
@@ -11,14 +10,14 @@ query_dns () {
     elif (( "$#" == 1 )); then
 	DOMAIN="$1"
 	for val in "${DEFAULTS[@]}"; do
-	    printf "The subdomain %s is a A record and points to " "$val"
-	    dig A "$val.$DOMAIN" | awk '$1 ~ /^\w/ {print $5}'
+	    IP=$(dig A "${val}.${DOMAIN}" | awk '$1 ~ /^\w/ {print $5}')
+	    echo "The subdomain $val is a A record and points to $IP"
 	done
     elif (( "$#" == 2 )); then
 	DOMAIN="$1"
 	SUBDOMAIN="$2"
-	printf "The subdomain %s is a A record and points to " "$SUBDOMAIN"
-	dig A "$SUBDOMAIN.$DOMAIN" | awk '$1 ~ /^\w/ {print $5}'
+	IP=$(dig A "${SUBDOMAIN}.${DOMAIN}" | awk '$1 ~ /^\w/ {print $5}')
+	echo "The subdomain $SUBDOMAIN is a A record and points to $IP"
     fi
 }
 
