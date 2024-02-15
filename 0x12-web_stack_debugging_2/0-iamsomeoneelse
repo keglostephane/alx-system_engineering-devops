@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# print effective user id given as parameter
+if [ -z "$1" ]; then
+    whoami
+else
+    sudo -u "$1" whoami
+fi
