@@ -24,7 +24,7 @@ if __name__ == "__main__":
     todoList = []
     for todo in todos:
         entry = {"task": f"{todo.get('title')}",
-                 "completed": bool(f"{todo.get('completed')}"),
+                 "completed": todo.get('completed'),
                  "username": f"{userName}"}
         todoList.append(entry)
     to_json = {f"{userId}": todoList}
