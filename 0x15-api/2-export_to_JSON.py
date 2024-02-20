@@ -24,10 +24,9 @@ if __name__ == "__main__":
     todoList = []
     for todo in todos:
         entry = {"task": f"{todo.get('title')}",
-                 "completed": f"{str(todo.get('completed')).casefold()}",
+                 "completed": bool(f"{todo.get('completed')}"),
                  "username": f"{userName}"}
         todoList.append(entry)
-
     to_json = {f"{userId}": todoList}
     with open(f"{userId}.json", 'w', encoding='utf-8') as jsonfile:
         json.dump(to_json, jsonfile)
