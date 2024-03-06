@@ -1,8 +1,5 @@
 #!/usr/bin/python3
-"""reddit_subscribers
-
-fetch the number of subscribers for a given subreddit.
-"""
+"""reddit_subscribers"""
 import requests
 
 
@@ -16,10 +13,10 @@ def number_of_subscribers(subreddit):
     """
     url = f'https://www.reddit.com/r/{subreddit}/about.json'
     headers = {'User-Agent': 'Firefox/5.0'}
-    req = requests.get(url, headers=headers, allow_redirects=False)
+    resp = requests.get(url, headers=headers, allow_redirects=False)
 
-    if req.status_code == 200:
-        result = req.json()
+    if resp.status_code == 200:
+        result = resp.json()
         return result.get("data").get("subscribers")
     else:
         return 0
